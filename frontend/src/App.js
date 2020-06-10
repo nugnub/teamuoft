@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Axios from 'axios';
 import './App.css';
 
 function App() {
+  const [state, setState] = useState("");
+  const changeInput = (event) => {
+    setState(event.target.value);
+
+  };
+
+  const sendInput = (event) => {
+    Axios.post('/sendText', {text: state}).then(Response => {
+      console.log(Response);
+    }).catch(Error => {
+      console.log("error:" + Error);
+      
+    });
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <input type="text" name="textbox" placeholder="type you message here" value={state} onChange={changeInput}/>
+
+        <button type="submit" onClick={sendInput}>
+          submit
+        </button>
+      <br/>
+      {state}
+
     </div>
   );
 }
