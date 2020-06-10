@@ -1,0 +1,23 @@
+version: '3'
+
+services: 
+    web:
+        build: ./webapp
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+            - ./webapp:/app
+        ports:
+            - "8000:8000"
+    react:
+        build: ./frontend
+        volumes:
+            - ./frontend:/reactapp
+        ports:
+            - "3000:3000"
+        stdin_open: TRUE
+        depends_on: 
+            - web
+        environment: 
+            - NODE_ENV=development
+
+
